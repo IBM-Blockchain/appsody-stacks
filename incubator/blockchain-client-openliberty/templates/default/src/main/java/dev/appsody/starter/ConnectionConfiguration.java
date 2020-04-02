@@ -6,7 +6,7 @@ import java.util.Base64;
 
 public class ConnectionConfiguration {
     // local fabric examples:
-    private static String conn = "";
+    private static String conn = "{}";
     
     // local fabric example:
     private static String certificate = "";
