@@ -38,7 +38,7 @@ In a more sophisticated implementation, the mapper would call out to a rule engi
 1. The request now gets routed to the API resource.
 1. The resource logic extracts the identity from the X-FABRIC-IDENTITY header and uses it to call getContract(identity) on the ConnectionManager.
 
-## Required Envirnment Variables
+## Required Environment Variables
 
 Here is a complete list of the supported environment variables as well as an example configuration.
 
