@@ -2,6 +2,7 @@ package application.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -27,7 +28,19 @@ public class ConnectionManager {
 
             if (gateway == null) {
                 LOGGER.info("Creating a new gateway...");
-                ByteArrayInputStream connProfileIS = new ByteArrayInputStream(ConnectionConfiguration.getConnectionProfile().getBytes());
+
+                String connectionProfileValue = ConnectionConfiguration.getConnectionProfile();
+                boolean isJSONDocument = isJSONDocument(connectionProfileValue);
+                InputStream connProfileIS;
+
+                if (isJSONDocument){
+                    //get connection profile straight from variable
+                    connProfileIS = new ByteArrayInputStream(connectionProfileValue.getBytes());
+                } else {
+                    //get connection profile from file 
+                    connProfileIS = ConnectionManager.class.getClassLoader().getResourceAsStream(connectionProfileValue);
+                }
+
                 Wallet wallet = new WalletManager().getWallet();
 
                 //Verify identity is in wallet. 
@@ -71,5 +84,9 @@ public class ConnectionManager {
             throw new GatewayException("Error retrieving contract.", e);
         }
         return contract;
+    }
+
+    private static boolean isJSONDocument(String document) {
+        return document.trim().startsWith("{") && document.trim().endsWith("}");
     }
 }
